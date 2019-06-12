@@ -33,10 +33,11 @@ function displayResults(responseJson) {
       // html for list
       `<li>
         <h3>${responseJson.data[i].fullName}</h3>
-        <p>${responseJson.data[i].states}</p>
+        <p>Location: ${responseJson.data[i].states}</p>
         <p>${responseJson.data[i].description}</p>
         <a href="${responseJson.data[i].url}">Visit This Park's Website!</a>
-      </li>`
+      </li>
+      <div class="line"></div>`
     );
   }
   $('#js-results').removeClass('hidden');

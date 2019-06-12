@@ -1,5 +1,43 @@
 * {
   box-sizing: border-box;
+  background-color: rgb(178, 238, 235);
+}
+h1 {
+  font-family: 'Roboto Mono', monospace;
+}
+
+form {
+  font-family: 'Lora', serif;
+}
+
+input {
+  background-color: white;
+}
+
+h2, li h3 {
+  font-family: 'Roboto Mono', monospace;
+}
+
+h2 {
+  text-align: center;
+}
+
+li p, a {
+  font-family: 'Lora', serif;
+}
+
+li {
+  list-style: none;
+}
+
+.line {
+  margin-top: 10px;
+  border-bottom: 1px solid darkslategray;
+}
+
+.submit-button {
+  box-shadow: 1px 1px 3px 1px darkslategray;
+  background-color: white;
 }
 
 .hidden {
