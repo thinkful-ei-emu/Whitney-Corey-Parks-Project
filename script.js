@@ -13,20 +13,68 @@
 // Base URL: https://developer.nps.gov/api/v1
 // /Park accepts queries - stateCode => a comma delimited list of 2 character state codes(array [string]), limit => number of results to return per request. Default is 50 (integer), q => term to search on, 
 
+// API key, normally don't publish this
 const apiKey = 'qWKDafaU2ia5S8an2zSq6TCkRK9dgVcZztRpbMLk';
-const searchURL = '';
+// Base url before params
+const searchURL = 'https://developer.nps.gov/api/v1/parks';
 
-// Format query parameters
-function formatQueryParams() {}
+// Format query parameters so they can be added to the searchURL
+function formatQueryParams(params) {
+  const queryItems = Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
+  return queryItems.join('&');
+}
 
 // Display results
-function displayResults() {}
+function displayResults(responseJson) {
+  $('#js-results-list').empty();
+  for (let i = 0; i < responseJson.data.length; i++) {
+    $('#js-results-list').append(
+      // html for list
+      `<li>
+        <h3>${responseJson.data[i].fullName}</h3>
+        <p>${responseJson.data[i].description}</p>
+        <a href="${responseJson.data[i].url}">Visit This Park's Website!</a>
+      </li>`
+    );
+  }
+  $('#js-results').removeClass('hidden');
+}
 
 // Get parks
-function getParks() {}
+function getParks(searchState, maxResults=10) {
+  const params = {
+    api_key: apiKey,
+    stateCode: searchState,
+    limit: maxResults
+  };
+  const queryString = formatQueryParams(params);
+  const url = searchURL + '?' + queryString;
+  console.log('About to fetch', params, url);
+
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .then(responseJson => displayResults(responseJson))
+    .catch(err => {
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    });
+}
 
 // Listen for form submision
-function watchForm() {}
+function watchForm() {
+  $('.js-form').submit(event => {
+    event.preventDefault();
+    const searchState = $('.js-state-submit').val();
+    const maxResults = $('.js-max-results').val();
+    //console.log('Heard the form, sending to getParks with ', searchState, maxResults);
+    getParks(searchState, maxResults);
+  });
+}
 
 // Load listener when page is ready
 $(watchForm);
