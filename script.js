@@ -33,6 +33,7 @@ function displayResults(responseJson) {
       // html for list
       `<li>
         <h3>${responseJson.data[i].fullName}</h3>
+        <p>${responseJson.data[i].states}</p>
         <p>${responseJson.data[i].description}</p>
         <a href="${responseJson.data[i].url}">Visit This Park's Website!</a>
       </li>`
@@ -45,7 +46,7 @@ function displayResults(responseJson) {
 function getParks(searchState, maxResults=10) {
   const params = {
     api_key: apiKey,
-    stateCode: searchState,
+    stateCode: [searchState],
     limit: maxResults
   };
   const queryString = formatQueryParams(params);
@@ -69,7 +70,7 @@ function getParks(searchState, maxResults=10) {
 function watchForm() {
   $('.js-form').submit(event => {
     event.preventDefault();
-    const searchState = $('.js-state-submit').val();
+    const searchState = $('.js-state-submit').val().replace(' ', '');
     const maxResults = $('.js-max-results').val();
     //console.log('Heard the form, sending to getParks with ', searchState, maxResults);
     getParks(searchState, maxResults);
